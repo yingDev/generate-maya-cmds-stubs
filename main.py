@@ -405,6 +405,7 @@ if __name__ == "__main__":
     # module structure for the cmds module.  Eg: import maya.cmds is ./maya/cmds/
     maya_directory = os.path.join(target_folder_path, "maya")
     cmds_directory = os.path.join(target_folder_path, "maya", "cmds")
+    mel_directory = os.path.join(target_folder_path, "maya", "mel")
 
     if os.path.exists(cmds_directory) and os.listdir(cmds_directory):
         if not force_overwrite:
@@ -421,6 +422,13 @@ if __name__ == "__main__":
     if not os.path.isfile(os.path.join(maya_directory, "__init__.pyi")):
         with open(os.path.join(maya_directory, "__init__.pyi"), "w") as f:
             ...
+        
+    if not os.path.exists(mel_directory):
+        os.makedirs(mel_directory)
+
+    # hack: eval is under maya.mel
+    with open(os.path.join(mel_directory, "__init__.pyi"), "w") as f:
+        f.writelines("from maya.cmds import eval as eval")
 
     start = time.perf_counter()
 
