@@ -214,7 +214,7 @@ def write_command_stubs(
             if category_file == "__init__.py":
                 continue
 
-            f.write(f"from {os.path.splitext(category_file)[0]} import *\n")
+            f.write(f"from .{os.path.splitext(category_file)[0]} import *\n")
 
     print("Done!")
 
